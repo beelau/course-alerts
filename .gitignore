@@ -4,8 +4,9 @@ bin
 lib
 include
 
-# sqlite database
+# Database
 *.sqlite
+db_repository/
 
 # Extra python files
 *.pyc
