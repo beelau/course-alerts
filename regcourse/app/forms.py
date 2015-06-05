@@ -7,4 +7,5 @@ class CourseForm(Form):
 	cid = IntegerField('Course ID', [validators.Required()])
 	sec = StringField('Course Section', [validators.Length(min=3, max=3), validators.Required()])
 	email = StringField('Email', [validators.Email(), validators.Required()])
+	reserved = BooleanField('Reserved',)
 	submit = SubmitField('submit')

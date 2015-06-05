@@ -24,9 +24,10 @@ class User(base):
 def startSession():
 	db_session = scoped_session(sessionmaker(bind=db))
 	course_list = db_session.query(Course).all()
-	regCourse(course_list)
+	user_list = db_session.query(User).all()
+	regCourse(course_list, user_list)
 
-def regCourse(course_list):
+def regCourse(course_list, user_list):
 
 	print "start"	
 	for c in course_list:
@@ -36,6 +37,10 @@ def regCourse(course_list):
 		sec = c.sec
 		print "%d - %s, %d, %s" % (id, cname, cid, sec)
 
+	for u in user_list:
+		print "%d - %s, %d, %s" % (u.id, u.email, u.course_id, u.reserved)
+
+
 		sess = dryscrape.Session()
 		sess.set_attribute('auto_load_images', False)
 		sess.visit("https://courses.students.ubc.ca/cs/main?sessyr=2014&sesscd=W")
@@ -44,7 +49,7 @@ def regCourse(course_list):
 		sess.visit("https://courses.students.ubc.ca/cs/main?pname=subjarea&tname=subjareas&req=5&dept=%s&course=%d&section=%s" % (cname, cid, sec))
 		pagehtml = sess.source()
 		findSeats(pagehtml)
-	print "end"
+	print "end"	
 
 def findSeats(pagehtml):
 	seatsRE = '<td width="200px">Total Seats Remaining:</td><td align="left"><strong>(\d+)</strong></td>' + '.+' + \
