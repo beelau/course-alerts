@@ -27,6 +27,17 @@ def startSession():
 	user_list = db_session.query(User).all()
 	regCourse(course_list, user_list)
 
+def printDb(course_list, user_list):
+	for c in course_list:
+		id = c.id
+		cname = c.cname
+		cid = c.cid
+		sec = c.sec
+		print "%d - %s, %d, %s" % (id, cname, cid, sec)	
+
+	for u in user_list:
+		print "%d - %s, %d, %s" % (u.id, u.email, u.course_id, u.reserved)
+
 def regCourse(course_list, user_list):
 
 	print "start"	
@@ -35,11 +46,6 @@ def regCourse(course_list, user_list):
 		cname = c.cname
 		cid = c.cid
 		sec = c.sec
-		print "%d - %s, %d, %s" % (id, cname, cid, sec)
-
-	for u in user_list:
-		print "%d - %s, %d, %s" % (u.id, u.email, u.course_id, u.reserved)
-
 
 		sess = dryscrape.Session()
 		sess.set_attribute('auto_load_images', False)
@@ -56,18 +62,21 @@ def findSeats(pagehtml):
 				'<td width="200px">General Seats Remaining:</td><td align="left"><strong>(\d+)</strong>' + '.+' + \
 				'<td width="200px">Restricted Seats Remaining\*:</td><td align="left"><strong>(\d+)</strong></td>'
 	seats = re.search(seatsRE, pagehtml)
-	totalseats = int(seats.group(1))
-	generalseats = int(seats.group(2))
-	reservedseats = int(seats.group(3))
+	if seats is not None:
+		totalseats = int(seats.group(1))
+		generalseats = int(seats.group(2))
+		reservedseats = int(seats.group(3))
 
+	print "%d" % totalseats
 	room = 0
-	reserved = 'f'
+	reserved = False
 	if totalseats > 0:
 		if generalseats > 0:
 			room = generalseats
 		elif reservedseats > 0:
-			if reserved == 'y':
-				room = reservedseats
+			room = reservedseats
+			reserved = True
+
 	
 def main():
 	start_time = time.time()

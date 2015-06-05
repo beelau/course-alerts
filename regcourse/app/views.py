@@ -52,3 +52,4 @@ def checkCourse(course_name, course_id, course_sec):
 	regex = 'The requested section is either no longer offered at UBC Vancouver or is not being offered this session.'
 	result = re.search(regex, pagehtml)
 	return result
+
