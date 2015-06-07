@@ -5,7 +5,6 @@ from forms import CourseForm
 from app import app
 import time
 import dryscrape
-from sqlalchemy.inspection import inspect
 import re
 
 @app.route('/', methods=['GET', 'POST'])
@@ -34,17 +33,22 @@ def home():
 				flash('Thank you for adding your course')
 				return redirect(url_for('home'))
 			else:
-				flash('Thank you for adding your course')
+				ckey = course.id
 				session['known'] = True
-				user = User(email=email, course_id=course.id, reserved=reserved)
-				db.session.add(user)
+				result = checkUser(email, ckey, reserved)
+				if result != None:
+					flash('user already exists')
+				else:
+					flash('Thank you for adding your course')
+					user = User(email=email, course_id=ckey, reserved=reserved)
+					db.session.add(user)
 			db.session.commit()
 	return render_template('home.html', form=form, known=session.get('known'))
 
 def checkCourse(course_name, course_id, course_sec):
 	sess = dryscrape.Session()
 	sess.set_attribute('auto_load_images', False)
-	sess.visit("https://courses.students.ubc.ca/cs/main?sessyr=2014&sesscd=W")
+	sess.visit("https://courses.students.ubc.ca/cs/main?sessyr=2015&sesscd=W")
 	sess.at_xpath('//*[@id="ubc7-unit-navigation"]/ul/li[1]/div/a').click()
 	sess.at_xpath('//*[@id="ubc7-unit-navigation"]/ul/li[1]/div/ul/li[2]/a').click()
 	sess.visit("https://courses.students.ubc.ca/cs/main?pname=subjarea&tname=subjareas&req=5&dept=%s&course=%d&section=%s" % (course_name, course_id, course_sec))
@@ -53,3 +57,6 @@ def checkCourse(course_name, course_id, course_sec):
 	result = re.search(regex, pagehtml)
 	return result
 
+def checkUser(email, ckey, reserved):
+	user = User.query.filter_by(email=email, course_id=ckey, reserved=reserved).first()
+	return user
