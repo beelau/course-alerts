@@ -20,7 +20,7 @@ def home():
 
 		result = checkCourse(course_name, course_id, course_sec)
 		if result is not None:
-			flash('*** ERROR - Course does not exist ***')
+			flash('*** Course does not exist ***')
 		else:
 			course = Course.query.filter_by(cname=course_name, cid=course_id, sec=course_sec).first()
 			if course is None:
@@ -29,20 +29,18 @@ def home():
 				db.session.flush()
 				user = User(email=email, course_id=course.id, reserved=reserved)
 				db.session.add(user)
-				session['known'] = False
 				flash('Thank you for adding your course')
-				return redirect(url_for('home'))
 			else:
 				ckey = course.id
-				session['known'] = True
 				result = checkUser(email, ckey, reserved)
 				if result != None:
-					flash('user already exists')
+					flash('User already exists for this course')
 				else:
 					flash('Thank you for adding your course')
 					user = User(email=email, course_id=ckey, reserved=reserved)
 					db.session.add(user)
 			db.session.commit()
+		return redirect(url_for('home'))
 	return render_template('home.html', form=form, known=session.get('known'))
 
 def checkCourse(course_name, course_id, course_sec):

@@ -1,13 +1,52 @@
 {% extends "base.html" %}
 {% import "bootstrap/wtf.html" as wtf %}
 
-{% block title %}CourseReg{% endblock %}
+{% block title %}UBC Course Alert{% endblock %}
 
 {% block page_content %}
-<div class="page-header">
-    <h1>{% if known %}Known{% else %}Not known {% endif %}</h1>
-</div>
+<div class="jumbotron">
+<div class="container">
+    {% for message in get_flashed_messages() %}
+    <div class="alert alert-warning">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        {{ message }}
+    </div>
+    {% endfor %}
+    <div class="row">
+    UBC FALL 2015
+    </div>
+	<div class="row">
+	<p>Enter your course information and we'll send you a email as soon as there's space!</p>
+	</div>
+	<p>
+	<form action="{{url_for('home')}}" method="post">
+	{{ form.hidden_tag() }}
+	<div class="row">
+		<div class="form-group">
+			<input class="course-detail" id="cname" name="cname" type="text" maxlength="4" placeholder="CPSC">
+			<input class="course-detail" id="cid" name="cid" type="text" maxlength="3" placeholder="110">
+			<input class="course-detail" id="sec" name="sec" type="text" maxlength="3" placeholder="101">
+		</div>
+	</div>
+	<div class="row">
 
-{{ wtf.quick_form(form) }}
+			<input class="email-detail" id="email" name="email" type="text" placeholder="email@email.com">
+
+	</div>
+	<div class="row">
+		<div class="checkbox-detail">
+			<label>
+ 				<input id="reserved" name="reserved" type="checkbox"> Allowed in restricted seats?
+			</label>
+		</div>
+	</div>
+	<div class="row">
+		<input class="btn btn-success" id="submit" name="submit" type="submit" value="Submit!">
+	</div>
+	{{ form.csrf_token }}
+	</form>
+	</p>
+</div>
+</div>
 
 {% endblock %}
