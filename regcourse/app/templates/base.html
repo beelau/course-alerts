@@ -1,6 +1,6 @@
 {% extends "bootstrap/base.html" %}
 
-{% block title %}Course Reg{% endblock %}
+{% block title %}UBC Course Alert{% endblock %}
 
 {% block styles %}
 {{super()}}
@@ -9,8 +9,10 @@
 {% endblock %}
 
 {% block content %}
-
-    {% block page_content %}{% endblock %}
-
+<div class="jumbotron">
+	<div class="container">
+    	{% block page_content %}{% endblock %}
+	</div>
+</div>
 {% endblock %}
 

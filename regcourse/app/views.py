@@ -1,4 +1,4 @@
-from flask import render_template, session, redirect, url_for, flash
+from flask import render_template, session, redirect, url_for, flash, request
 from . import db
 from .models import Course, User
 from forms import CourseForm
@@ -20,8 +20,9 @@ def home():
 
 		result = checkCourse(course_name, course_id, course_sec)
 		if result is not None:
-			flash('*** Course does not exist ***')
+			flash('Unable to find course')
 		else:
+			known = None
 			course = Course.query.filter_by(cname=course_name, cid=course_id, sec=course_sec).first()
 			if course is None:
 				course = Course(cname=course_name, cid=course_id, sec=course_sec)
@@ -29,19 +30,23 @@ def home():
 				db.session.flush()
 				user = User(email=email, course_id=course.id, reserved=reserved)
 				db.session.add(user)
-				flash('Thank you for adding your course')
 			else:
 				ckey = course.id
 				result = checkUser(email, ckey, reserved)
 				if result != None:
-					flash('User already exists for this course')
+					known = True
 				else:
-					flash('Thank you for adding your course')
 					user = User(email=email, course_id=ckey, reserved=reserved)
 					db.session.add(user)
 			db.session.commit()
-		return redirect(url_for('home'))
-	return render_template('home.html', form=form, known=session.get('known'))
+			return redirect(url_for('complete', known=known))
+	return render_template('home.html', form=form)
+
+@app.route('/complete')
+def complete():
+	known = request.args.get('known', type=bool)
+	app.logger.debug(known)
+	return render_template('complete.html', known=known)
 
 def checkCourse(course_name, course_id, course_sec):
 	sess = dryscrape.Session()

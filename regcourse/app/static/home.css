@@ -14,7 +14,8 @@ p{
 	left: 50%;
 	transform: translate(-50%, -50%);
 	width: 35%;
-	min-height: 375px;
+	min-height: 425px;
+	margin-bottom:0;
 }
 
 .course-detail {
@@ -36,11 +37,14 @@ p{
 	height: 40px;
 }
 
-.alert-block {
-padding-top: 10px;
-padding-bottom: 10px;
+input:focus {
+   outline:none;
+  }
+
+.container {
+	margin-bottom:0;
 }
 
-.hed {
-	text-align: right;
+.register-new {
+	vertical-algin: bottom;
 }
