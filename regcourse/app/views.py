@@ -44,9 +44,7 @@ def home():
 
 @app.route('/complete')
 def complete():
-	known = request.args.get('known', type=bool)
-	app.logger.debug(known)
-	return render_template('complete.html', known=known)
+	return render_template('complete.html', known=request.args.get('known', type=bool))
 
 def checkCourse(course_name, course_id, course_sec):
 	sess = dryscrape.Session()

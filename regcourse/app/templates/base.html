@@ -9,10 +9,20 @@
 {% endblock %}
 
 {% block content %}
-<div class="jumbotron">
-	<div class="container">
-    	{% block page_content %}{% endblock %}
+
+<div class="container-fluid">
+
+	<div class="row">
+		<div class="col-xs-12 col-md-6 col-md-offset-3">
+			<div class="jumbotron">
+				<div class="container">
+   		 			{% block page_content %}{% endblock %}
+				</div>
+			</div>
+		</div>
 	</div>
+
 </div>
+
 {% endblock %}
 
