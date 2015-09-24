@@ -7,6 +7,9 @@ The user interface for students to enter their course information and email.
 #####regcourse.py
 This is the script that is responsible for querying the database in the background, and scraping each course page for the space availability and sending an email if there is available space. I decided to use regex instead of Xpath or CSSselect for scraping because it worked easier and the site layout from term to term remained consistent. 
 
+####config.py
+Contains configuration information for some flask extensions and email info.
+
 #Usage
 Installation instructions for Ubuntu:
 ```
