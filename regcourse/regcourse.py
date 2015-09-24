@@ -10,6 +10,7 @@ from email.mime.text import MIMEText
 import smtplib
 import dryscrape
 import re
+from bs4 import BeautifulSoup
 from config import USER_EMAIL, PASSWORD
 
 db = create_engine("%s" % SQLALCHEMY_DATABASE_URI)
@@ -55,6 +56,7 @@ def regCourse(session):
 		cid = c.cid
 		sec = c.sec
 		print "%d - %s, %d, %s" % (pkey, cname, cid, sec)	
+		dryscrape.start_xvfb()
 		sess = dryscrape.Session()
 		sess.set_attribute('auto_load_images', False)
 		sess.visit("https://courses.students.ubc.ca/cs/main?sessyr=2015&sesscd=W")

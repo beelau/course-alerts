@@ -47,6 +47,7 @@ def complete():
 	return render_template('complete.html', known=request.args.get('known', type=bool))
 
 def checkCourse(course_name, course_id, course_sec):
+	dryscrape.start_xvfb()
 	sess = dryscrape.Session()
 	sess.set_attribute('auto_load_images', False)
 	sess.visit("https://courses.students.ubc.ca/cs/main?sessyr=2015&sesscd=W")

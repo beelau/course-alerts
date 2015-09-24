@@ -9,6 +9,7 @@ p{
 }
 
 .jumbotron {
+	min-height: 425px;
 	background-color:  	#FFFFFF;
 }
 
